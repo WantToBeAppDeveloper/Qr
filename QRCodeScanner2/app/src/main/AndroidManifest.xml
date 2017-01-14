@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".GalleryActivity" />
-        <activity android:name=".FullImageActivity"></activity>
+        <activity android:name=".FullImageActivity" />
+        <activity android:name=".ResultsActivity"></activity>
     </application>
 
 </manifest>

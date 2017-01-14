@@ -13,9 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -118,7 +116,8 @@ public class ReadingActivity extends AppCompatActivity {
         if (!file.exists()) {
             file.mkdirs();//if not, create it
         }
-        File imageFile = new File(file.getPath() + resultOfScan +".jpg");
+        String timeStamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        File imageFile = new File(file.getPath() + resultOfScan+ ".jpg");
         writeBitmapToFile(bitmap, imageFile);
     }
 

@@ -15,7 +15,7 @@ public class FullImageActivity extends AppCompatActivity {
         Intent i =getIntent();
 
         int position=i.getExtras().getInt("id");
-        ImageAdapter adapter =new ImageAdapter(this);
+        GalleryActivity.ImageAdapter adapter =new GalleryActivity.ImageAdapter(this);
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageBitmap(ImageUtils.getBitmapFromFile(adapter.itemList.get(position)));
