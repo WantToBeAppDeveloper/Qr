@@ -36,7 +36,11 @@ public class ResultsActivity extends AppCompatActivity {
         });
     result_txt=(TextView) findViewById(R.id.result_txt);
         result_txt.setText(resultOfScan);
-
+/*
+resultOfScan взят из ReadingActivity. Не знаю как использовать переменные из других активити. 
+Поэтому наколхозил с "continScan"(continue Scaner activity)
+Еще не знаю как сюда добавить результаты с обычной камеры
+*/
     }
 
     private void startScanningQrCode(Activity activity) {
