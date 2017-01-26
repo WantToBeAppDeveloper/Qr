@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 
+import static com.example.user.qrcodescanner.R.drawable.ic_collections_black_24dp;
+
 public class ReadingActivity extends AppCompatActivity {
 
     private static final String TAG = "ReadingActivity";
@@ -116,7 +118,6 @@ public class ReadingActivity extends AppCompatActivity {
         if (!file.exists()) {
             file.mkdirs();//if not, create it
         }
-        String timeStamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
         File imageFile = new File(file.getPath() + resultOfScan+ ".jpg");
         writeBitmapToFile(bitmap, imageFile);
     }

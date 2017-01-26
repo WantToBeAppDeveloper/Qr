@@ -1,6 +1,8 @@
 package com.example.user.qrcodescanner;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +36,20 @@ public class ResultsActivity extends AppCompatActivity {
                 startScanningQrCode(ResultsActivity.this);
             }
         });
+
+        Intent i =getIntent();
+
+        int position=i.getExtras().getInt("id");
+        GalleryActivity.ImageAdapter adapter =new GalleryActivity.ImageAdapter(this);
+
+       result_of_scan =(ImageView) findViewById(R.id.result_of_scan);
+        result_of_scan.setImageBitmap(ImageUtils.getBitmapFromFile(adapter.itemList.get(position)));
+
+        /*
+        result_of_scan=(ImageView) findViewById(R.id.result_of_scan);
+        result_of_scan.setImageDrawable(Drawable.createFromPath("sdcard/Scan_Results/"));    //изменить или продолжить путь до выбранного файла?
+*/
+
     result_txt=(TextView) findViewById(R.id.result_txt);
         result_txt.setText(resultOfScan);
 
