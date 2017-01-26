@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 .idea
+=======
+
+>>>>>>> df32e8f970e619fc06b076b9f100e27d73a59da3
 *.iml
 .gradle
 /local.properties
