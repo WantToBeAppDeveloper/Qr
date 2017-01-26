@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -30,8 +32,8 @@ public class GalleryActivity extends AppCompatActivity {
         gridview.setAdapter(myImageAdapter);
 
         String ExternalStorageDirectoryPath = Environment
-                .getExternalStorageDirectory()
-                .getAbsolutePath();
+            .getExternalStorageDirectory()
+            .getAbsolutePath();
 
         String targetPath = ExternalStorageDirectoryPath + "/Scan_results/";
 
@@ -42,7 +44,7 @@ public class GalleryActivity extends AppCompatActivity {
         // в папке может ничего не быть и тогда files == null
         // обработай этот случай
         if (files != null) {
-            for (File file : files){
+            for (File file : files) {
                 myImageAdapter.add(file.getAbsolutePath());
             }
         }
@@ -50,27 +52,26 @@ public class GalleryActivity extends AppCompatActivity {
 
     }
 
-    AdapterView.OnItemClickListener myOnItemClickListener
-            = new AdapterView.OnItemClickListener(){
+    AdapterView.OnItemClickListener myOnItemClickListener = new AdapterView.OnItemClickListener() {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            String prompt = (String)parent.getItemAtPosition(position);
-            Toast.makeText(getApplicationContext(),
-                    prompt,
-                    Toast.LENGTH_LONG).show();
-
-        }};
-
+            String prompt = (String) parent.getItemAtPosition(position);
+            Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
+            // TODO при нажатии показывать фото на полный экран
+        }
+    };
 
     public static class ImageAdapter extends BaseAdapter {
 
         private Context mContext;
         ArrayList<String> itemList = new ArrayList<String>();
+        private LayoutInflater inflater;
 
         public ImageAdapter(Context c) {
             mContext = c;
+            inflater = LayoutInflater.from(mContext);
         }
 
         void add(String path) {
@@ -79,7 +80,6 @@ public class GalleryActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-
             return itemList.size();
         }
 
@@ -96,14 +96,21 @@ public class GalleryActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView = new ImageView(mContext);
-            imageView.setImageBitmap(ImageUtils.getBitmapFromFile(itemList.get(position)));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setLayoutParams(new GridView.LayoutParams(240, 240));
+            View view = inflater.inflate(R.layout.item_gallery_photo, parent, false);
 
+            ImageView uiImage = (ImageView) view.findViewById(R.id.image);
+            TextView uiText = (TextView) view.findViewById(R.id.file_name);
 
-            return imageView;
+            // TODO выдергивать имя файла и показывать в формате
+            // и выводить в формате file_name_....jpg если имя файла длинное
+            // если имя файла не очень длинное то выводить его полностью
+            String pathToImage = itemList.get(position);
+            // TODO может случится крэш, если фотка большого размера
+            // использовать для отображения библиотеку Glide
+            uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToImage));
+            uiText.setText(pathToImage.substring(pathToImage.length() - 20)); // TODO если путь короче 20 символов
+
+            return view;
         }
-
-
-    }}
+    }
+}
