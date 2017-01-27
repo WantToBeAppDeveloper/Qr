@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,16 +26,11 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Calendar;
 
-import static com.example.user.qrcodescanner.R.drawable.ic_collections_black_24dp;
+public class MainActivity extends AppCompatActivity {
 
-public class ReadingActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
-    private static final String TAG = "ReadingActivity";
-
-    private static final int TAKE_PICTURE_REQUEST = 1234;
     private final        int GALLERY_REQUEST      = 22131;
 
     private Button scan_btn;
@@ -53,12 +47,15 @@ public class ReadingActivity extends AppCompatActivity {
 
         scan_btn = (Button) findViewById(R.id.scan_btn);
         uiResultOfScanIv = (ImageView) findViewById(R.id.result_of_scan);
+
         scan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startScanningQrCode(ReadingActivity.this);
+                startScanningQrCode(MainActivity.this);
+//                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
             }
         });
+
         exit_btn = (Button) findViewById(R.id.exit_btn);
         exit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,17 +65,12 @@ public class ReadingActivity extends AppCompatActivity {
         });
         findViewById(R.id.open_gallery).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-
-                startActivity(new Intent(ReadingActivity.this, GalleryActivity.class));
+                startActivity(new Intent(MainActivity.this, GalleryActivity.class));
             }
         });
         findViewById(R.id.open_camera).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String timeStamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-                File photo = new File(getScanFolder(), "camera_photo"+timeStamp+".jpg");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
-                startActivityForResult(intent, TAKE_PICTURE_REQUEST);
+                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
             }
         });
     }
@@ -118,7 +110,7 @@ public class ReadingActivity extends AppCompatActivity {
         if (!file.exists()) {
             file.mkdirs();//if not, create it
         }
-        File imageFile = new File(file.getPath() + resultOfScan+ ".jpg");
+        File imageFile = new File(file.getPath() + resultOfScan + ".jpg");
         writeBitmapToFile(bitmap, imageFile);
     }
 
@@ -168,12 +160,6 @@ public class ReadingActivity extends AppCompatActivity {
         } else {
             if (requestCode == GALLERY_REQUEST) {
 
-            } else if (requestCode == TAKE_PICTURE_REQUEST) {
-                if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(this, "Фотография сохранена", Toast.LENGTH_SHORT).show();
-                } else if (resultCode == Activity.RESULT_CANCELED) {
-                    Toast.makeText(this, "Отмена съемки", Toast.LENGTH_SHORT).show();
-                }
             } else {
                 super.onActivityResult(requestCode, resultCode, data);
             }

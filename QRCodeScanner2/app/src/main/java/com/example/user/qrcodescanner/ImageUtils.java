@@ -2,6 +2,8 @@ package com.example.user.qrcodescanner;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.File;
 
@@ -11,8 +13,8 @@ import java.io.File;
 
 public class ImageUtils {
 
-    public static Bitmap getBitmapFromFile(String pathToImage) {
-        File imgFile = new File(pathToImage);
+    @Nullable public static Bitmap getBitmapFromFile(@NonNull String pathToFile) {
+        File imgFile = new File(pathToFile);
 
         if (imgFile.exists()) {
             return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -20,5 +22,4 @@ public class ImageUtils {
             return null;
         }
     }
-
 }
