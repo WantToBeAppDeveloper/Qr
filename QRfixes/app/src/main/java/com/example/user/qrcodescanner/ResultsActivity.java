@@ -86,7 +86,7 @@ public class ResultsActivity extends AppCompatActivity {
     }
 
     private void startCamera() {
-        //Разрешение для android 6.0   (89-121 строчки)
+
         if(ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
             callCamera();

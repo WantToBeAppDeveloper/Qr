@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @NonNull public static File getScanFolder() {
-       return new File(Environment.getExternalStorageDirectory(), "/Scan_Results");
+       return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
     }
 
     private void writeBitmapToFile(Bitmap bitmap, File imageFile) {
