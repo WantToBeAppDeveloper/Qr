@@ -121,19 +121,21 @@ if (requestCode==REQUEST_EXTERNAL_STORAGE_RESULT){
 
     }
 
-    private  void callCamera(){
+    private  void callCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        String timeStamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
         File scanFolder = MainActivity.getScanFolder();
         if (!scanFolder.exists()) {
             scanFolder.mkdirs();
         }
-        File photo = new File(scanFolder, "camera_photo" + timeStamp + ".jpg");
-        pathToCapturedImage = photo.getAbsolutePath();
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
-        startActivityForResult(intent, TAKE_PICTURE_REQUEST);
-        //startGlide();
-    }
+        //for (int i = 1; i <photo.length;i++) {
+            File photo = new File(scanFolder, "img " +/*+i+*/".jpg");
+            pathToCapturedImage = photo.getAbsolutePath();
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
+            startActivityForResult(intent, TAKE_PICTURE_REQUEST);
+            //startGlide();
+        }
+    //}
+
 /*
     private void startGlide() {
         Glide

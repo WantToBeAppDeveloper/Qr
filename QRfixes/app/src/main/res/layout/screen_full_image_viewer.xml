@@ -12,7 +12,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scaleType="centerCrop"
-        android:layout_marginBottom="8dp"
         tools:src="@drawable/ic_collections_black_24dp"
         />
 
@@ -20,9 +19,20 @@
         android:id="@+id/path_to_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="path to file"
-        android:gravity="center"
-        android:layout_marginBottom="12dp"
+        tools:text="Name of file"
+        android:gravity="left"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="10dp"
+        />
+
+    <TextView
+        android:id="@+id/timeStamp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Time stamp"
+        android:gravity="left"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="7dp"
         />
 
 </LinearLayout>

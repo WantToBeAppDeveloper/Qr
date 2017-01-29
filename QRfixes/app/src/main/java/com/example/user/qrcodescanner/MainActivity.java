@@ -26,6 +26,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -105,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
         if (!file.exists()) {
             file.mkdirs();//if not, create it
         }
-        File imageFile = new File(file.getPath() + resultOfScan + ".jpg");
+        String timeStamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        File imageFile = new File(file.getPath() + resultOfScan +  timeStamp+ ".jpg");
         writeBitmapToFile(bitmap, imageFile);
     }
 
