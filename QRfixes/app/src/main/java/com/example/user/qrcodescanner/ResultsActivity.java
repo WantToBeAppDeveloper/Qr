@@ -127,24 +127,23 @@ if (requestCode==REQUEST_EXTERNAL_STORAGE_RESULT){
         if (!scanFolder.exists()) {
             scanFolder.mkdirs();
         }
-        //for (int i = 1; i <photo.length;i++) {
+        //for (int i = 0; i <photo.length;i++) {
             File photo = new File(scanFolder, "img " +/*+i+*/".jpg");
             pathToCapturedImage = photo.getAbsolutePath();
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
             startActivityForResult(intent, TAKE_PICTURE_REQUEST);
-            //startGlide();
+            startGlide();
         }
     //}
 
-/*
+
     private void startGlide() {
         Glide
-                .with(uiResult)
+                .with(this)
                 .load(pathToCapturedImage)
-                .override(600, 200) // resizes the image to these dimensions (in pixel). does not respect aspect ratio
+                .override(600, 200)
                 .into(uiResultOfScanImage);
     }
-    */
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TAKE_PICTURE_REQUEST) {

@@ -21,18 +21,11 @@
         android:layout_height="wrap_content"
         tools:text="Name of file"
         android:gravity="left"
+        android:layout_marginLeft="10dp"
         android:textColor="@color/colorPrimary"
         android:layout_marginBottom="10dp"
         />
 
-    <TextView
-        android:id="@+id/timeStamp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Time stamp"
-        android:gravity="left"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginBottom="7dp"
-        />
+
 
 </LinearLayout>
