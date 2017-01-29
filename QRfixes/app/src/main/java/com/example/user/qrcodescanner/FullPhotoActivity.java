@@ -34,5 +34,32 @@ public class FullPhotoActivity extends AppCompatActivity {
         uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToFile));
         uiPathToFile.setText(pathToFile);
         // TODO сделать в горизонтальной ориентации более симпатичный экран
+
+      /*
+      Пример Фул скрина из глайда. Хочу добавить только строчки 58-61.
+      Только не знаю, как отобразить текст внизу
+
+
+public class FullscreenActivity extends FragmentActivity {
+  private static final String ARG_PHOTO = "photo";
+
+  public static Intent getIntent(Context context, Photo photo) {
+    Intent intent = new Intent(context, FullscreenActivity.class);
+    intent.putExtra(ARG_PHOTO, photo);
+    return intent;
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.fullscreen_activity);
+    ImageView fullscreenView = (ImageView) findViewById(R.id.fullscreen_view);
+    Photo photo = getIntent().getParcelableExtra(ARG_PHOTO);
+
+    Glide.with(this)
+        .load(pathToImage)
+        .apply(fitCenterTransform(this))
+        .into(uiImage);
+         */
     }
 }
