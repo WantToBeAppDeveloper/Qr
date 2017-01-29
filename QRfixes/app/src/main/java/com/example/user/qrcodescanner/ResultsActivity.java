@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
@@ -131,7 +132,17 @@ if (requestCode==REQUEST_EXTERNAL_STORAGE_RESULT){
         pathToCapturedImage = photo.getAbsolutePath();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
         startActivityForResult(intent, TAKE_PICTURE_REQUEST);
+        //startGlide();
     }
+/*
+    private void startGlide() {
+        Glide
+                .with(uiResult)
+                .load(pathToCapturedImage)
+                .override(600, 200) // resizes the image to these dimensions (in pixel). does not respect aspect ratio
+                .into(uiResultOfScanImage);
+    }
+    */
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TAKE_PICTURE_REQUEST) {
