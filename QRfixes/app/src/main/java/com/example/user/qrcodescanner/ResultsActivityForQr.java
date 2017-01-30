@@ -149,7 +149,7 @@ public class ResultsActivityForQr extends AppCompatActivity {
     }
 
     private void startGlide() {
-        Glide.with(this).load(pathToScannedImage).centerCrop().crossFade().into(imageView);
+        Glide.with(this).load(pathToScannedImage).fitCenter().crossFade().into(imageView);
     }
 
 }

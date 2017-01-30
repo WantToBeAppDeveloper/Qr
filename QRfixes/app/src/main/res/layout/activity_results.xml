@@ -35,7 +35,8 @@
         android:textSize="20dp"
         android:layout_above="@+id/continScan_btn"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="@color/colorPrimaryDark"/>
 
     <TextView
         android:id="@+id/textView"
@@ -47,6 +48,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="11dp"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_marginStart="1dp" />
 
     <Button

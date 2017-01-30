@@ -47,7 +47,7 @@ public class GalleryActivity extends AppCompatActivity {
         if (files==null){
             Toast.makeText(this,"Сначала сделайте снимок",Toast.LENGTH_SHORT).show();
         }
-        if (files != null) {
+        else {
             for (File file : files) {
                 myImageAdapter.add(file.getAbsolutePath());
             }
@@ -61,9 +61,9 @@ public class GalleryActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-           Intent fullScreenIntent= new Intent(GalleryActivity.this, FullPhotoActivity.class);
-            fullScreenIntent.setData();//==================Не знаю как передать Uri картинки
-            startActivity(fullScreenIntent);
+            String prompt = (String) parent.getItemAtPosition(position);
+            startActivity(FullPhotoActivity.createIntent(GalleryActivity.this,prompt));
+
             // TODO при нажатии показывать фото на полный экран
         }
     };
