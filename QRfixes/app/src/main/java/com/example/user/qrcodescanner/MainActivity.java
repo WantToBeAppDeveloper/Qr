@@ -68,97 +68,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.scan_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startScanningQrCode(MainActivity.this);
+                startActivity(new Intent(MainActivity.this, ResultsActivityForQr.class));
             }
         });
     }
 
-    private void startScanningQrCode(Activity activity) {
-        IntentIntegrator integrator = new IntentIntegrator(activity);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-        integrator.setPrompt("Наведите камеру на код");
-        integrator.setCameraId(0);
-        integrator.setBeepEnabled(false);
-        integrator.setBarcodeImageEnabled(false);
-        integrator.initiateScan();
-    }
-    private void saveAsQrCodeImageToGallery(String text) {
-        QRCodeWriter writer = new QRCodeWriter();
-        try {
-            BitMatrix bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, 512, 512);
-            int width = bitMatrix.getWidth();
-            int height = bitMatrix.getHeight();
-            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
-                }
-            }
-            saveToGallery(bitmap, text);
-            uiResultOfScanIv.setImageBitmap(bitmap);
-
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveToGallery(Bitmap bitmap, String title) {
-        File file = getScanFolder();
-        if (!file.exists()) {
-            file.mkdirs();//if not, create it
-        }
-
-        File imageFile = new File(file.getPath() + resultOfScan + ".jpg");
-        writeBitmapToFile(bitmap, imageFile);
-    }
-
     @NonNull public static File getScanFolder() {
        return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
+
     }
 
-    private void writeBitmapToFile(Bitmap bitmap, File imageFile) {
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, out); // bmp is your Bitmap instance
-            // PNG is a lossless format, the compression factor (100) is ignored
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult: ");
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Отмена сканирования", Toast.LENGTH_LONG).show();
-            } else {
-                resultOfScan = result.getContents();
-                Toast.makeText(this, resultOfScan, Toast.LENGTH_LONG).show();
-                saveAsQrCodeImageToGallery(resultOfScan);
-                boolean isValidUrl = Patterns.WEB_URL.matcher(resultOfScan).matches();
-                if (isValidUrl) {
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(resultOfScan));
-                    startActivity(i);
-                }
-            }
-        } else {
-            if (requestCode == GALLERY_REQUEST) {
-
-            } else {
-                super.onActivityResult(requestCode, resultCode, data);
-            }
-        }
-    }
 }

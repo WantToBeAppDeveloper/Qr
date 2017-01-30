@@ -21,6 +21,7 @@
         </activity>
         <activity android:name=".GalleryActivity" />
         <activity android:name=".ResultsActivity" />
+        <activity android:name=".ResultsActivityForQr" />
         <activity android:name=".FullPhotoActivity" />
     </application>
 

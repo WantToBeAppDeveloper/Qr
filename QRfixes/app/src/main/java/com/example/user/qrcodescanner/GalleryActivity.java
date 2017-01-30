@@ -1,6 +1,8 @@
 package com.example.user.qrcodescanner;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -41,8 +43,10 @@ public class GalleryActivity extends AppCompatActivity {
         File targetDirector = new File(targetPath);
 
         File[] files = targetDirector.listFiles();
-        // в папке может ничего не быть и тогда files == null
-        // обработай этот случай
+
+        if (files==null){
+            Toast.makeText(this,"Сначала сделайте снимок",Toast.LENGTH_SHORT).show();
+        }
         if (files != null) {
             for (File file : files) {
                 myImageAdapter.add(file.getAbsolutePath());
@@ -57,8 +61,9 @@ public class GalleryActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            String prompt = (String) parent.getItemAtPosition(position);
-            Toast.makeText(getApplicationContext(), prompt, Toast.LENGTH_LONG).show();
+           Intent fullScreenIntent= new Intent(GalleryActivity.this, FullPhotoActivity.class);
+            fullScreenIntent.setData();//==================Не знаю как передать Uri картинки
+            startActivity(fullScreenIntent);
             // TODO при нажатии показывать фото на полный экран
         }
     };
@@ -101,14 +106,23 @@ public class GalleryActivity extends AppCompatActivity {
             ImageView uiImage = (ImageView) view.findViewById(R.id.image);
             TextView uiText = (TextView) view.findViewById(R.id.file_name);
 
+
             // TODO выдергивать имя файла и показывать в формате
             // и выводить в формате file_name_....jpg если имя файла длинное
             // если имя файла не очень длинное то выводить его полностью
             String pathToImage = itemList.get(position);
             // TODO может случится крэш, если фотка большого размера
             // использовать для отображения библиотеку Glide
+
+
             uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToImage));
-            uiText.setText(pathToImage.substring(pathToImage.length() - 14)); // TODO если путь короче 20 символов
+            if(pathToImage.length()<=14){
+                uiText.setText(pathToImage);
+            }
+            else {
+                uiText.setText(pathToImage.substring(pathToImage.length() - 14));
+            }
+         // TODO если путь короче 20 символов
 
             return view;
         }
