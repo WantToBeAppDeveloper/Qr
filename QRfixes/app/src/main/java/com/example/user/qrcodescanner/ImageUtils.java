@@ -7,9 +7,6 @@ import android.support.annotation.Nullable;
 
 import java.io.File;
 
-/**
- * Created by ereminilya on 6/1/17.
- */
 
 public class ImageUtils {
 

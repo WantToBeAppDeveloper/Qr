@@ -34,6 +34,7 @@ public class ResultsActivityForQr extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+
         findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,6 +47,9 @@ public class ResultsActivityForQr extends AppCompatActivity {
                 startScanningQrCode(ResultsActivityForQr.this);
             }
         });
+        if (savedInstanceState == null) {
+            startScanningQrCode(ResultsActivityForQr.this);
+        }
         findViewById(R.id.continCam_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +60,7 @@ public class ResultsActivityForQr extends AppCompatActivity {
      imageView= (ImageView) findViewById(R.id.result_of_scan);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//посмотри потом
                 if (pathToScannedImage != null) {
                     startGlide();
                 } else {
@@ -76,7 +80,7 @@ public class ResultsActivityForQr extends AppCompatActivity {
         integrator.initiateScan();
     }
 
-    private void saveAsQrCodeImageToGallery(String text) {
+    private void saveAsQrCodeImageToGallery(@NonNull  String text) {
         QRCodeWriter writer = new QRCodeWriter();
         try {
             BitMatrix bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, 512, 512);
@@ -97,7 +101,7 @@ public class ResultsActivityForQr extends AppCompatActivity {
     }
 
     private void saveToGallery(Bitmap bitmap, String title) {
-        File file = getScanFolder();
+        File file = getQrHistoryFolder();
         if (!file.exists()) {
             file.mkdirs();//if not, create it
         }
@@ -108,8 +112,9 @@ public class ResultsActivityForQr extends AppCompatActivity {
     }
 
     @NonNull
-    public static File getScanFolder() {
-        return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
+    public static File getQrHistoryFolder() {
+        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                + File.separator + "QR_results");
     }
 
     private void writeBitmapToFile(Bitmap bitmap, File imageFile) {

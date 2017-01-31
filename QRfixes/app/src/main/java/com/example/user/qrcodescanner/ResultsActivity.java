@@ -1,5 +1,6 @@
 package com.example.user.qrcodescanner;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,6 +25,8 @@ import java.util.Calendar;
 public class ResultsActivity extends AppCompatActivity {
 
     private static final int TAKE_PICTURE_REQUEST = 1234;
+
+    private static final int REQUEST_WRITE_STORAGE_RESULT = 1;
     private static final int REQUEST_CAMERA_RESULT = 2;
     private String pathToCapturedImage;
     private String nameOfPhoto;
@@ -54,6 +57,13 @@ public class ResultsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             startCamera();
         }
+        findViewById(R.id.continScan_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ResultsActivity.this,ResultsActivityForQr.class));
+            }
+        });
+
         uiResult = (TextView) findViewById(R.id.result_txt);
         uiResultOfScanImage = (ImageView) findViewById(R.id.result_of_scan);
         uiResultOfScanImage.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +80,8 @@ public class ResultsActivity extends AppCompatActivity {
 
 
     private void startCamera() {
-
+        callCamera();
+/*
         if(Build.VERSION.SDK_INT>Build.VERSION_CODES.M){
             if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)==
                     PackageManager.PERMISSION_GRANTED){
@@ -82,10 +93,9 @@ public class ResultsActivity extends AppCompatActivity {
                 requestPermissions(new String[]{android.Manifest.permission.CAMERA},REQUEST_CAMERA_RESULT);
             }
         }
-        else{
+        else{ //Если версия Андроид старше 6.0
             callCamera();
-        }
-
+        }*/
     }
     private  void callCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

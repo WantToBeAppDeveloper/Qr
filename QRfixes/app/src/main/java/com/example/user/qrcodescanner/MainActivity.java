@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity/* extends RunTimePermission*/ {
 
     private static final String TAG = "MainActivity";
 
@@ -68,9 +68,19 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.scan_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // startActivity(new Intent(MainActivity.this, ResultsActivityForQr.class));
+                startActivity(new Intent(MainActivity.this, ResultsActivityForQr.class));
             }
         });
+        findViewById(R.id.history_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,HistoryActivity.class));
+            }
+        });
+    }
+
+    @NonNull public static File getQrHistoryFolder(){
+        return  new File (Environment.getExternalStorageDirectory(),"QR_Results");
     }
 
     @NonNull public static File getScanFolder() {

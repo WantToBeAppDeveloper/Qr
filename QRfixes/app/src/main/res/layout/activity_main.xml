@@ -16,7 +16,7 @@
 
     <ImageView
         android:id="@+id/result_of_scan"
-        android:layout_width="300dp"
+        android:layout_width="00dp"
         android:layout_height="300dp"
         android:layout_weight="0.02"
         android:layout_alignParentTop="true"
@@ -51,8 +51,7 @@
         android:layout_height="wrap_content"
         android:text="Прочитать QR"
         android:textSize="15sp"
-        tools:layout_marginTop="15dp"
-        android:layout_below="@+id/result_of_scan"
+        tools:layout_marginTop="250dp"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -65,4 +64,12 @@
         android:layout_below="@+id/scan_btn"
         android:layout_alignLeft="@+id/result_of_scan"
         android:layout_alignStart="@+id/result_of_scan" />
+
+    <Button
+        android:text="История QR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/history_btn"
+        android:layout_below="@+id/open_camera"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
