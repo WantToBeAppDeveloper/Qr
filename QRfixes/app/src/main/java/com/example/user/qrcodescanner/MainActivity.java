@@ -1,6 +1,5 @@
 package com.example.user.qrcodescanner;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,11 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -28,10 +24,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     /*
  TODO   ===Разрешения===
@@ -41,12 +35,12 @@ public class MainActivity extends AppCompatActivity{
  */
     private static final String TAG = "MainActivity";
 
-    private static final int GALLERY_REQUEST = 22131;
+    private static final int GALLERY_REQUEST    = 22131;
     private static final int REQUEST_PERMISSION = 10;
 
     private static final int REQUEST_EXTERNAL_STORAGE_RESULT = 1;
 
-    private String    resultOfScan;
+    private String resultOfScan;
 
 
     @Override
@@ -61,12 +55,12 @@ public class MainActivity extends AppCompatActivity{
              R.string.msg,REQUEST_PERMISSION);
         */
 
-      findViewById(R.id.exit_btn).setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              finish();
-          }
-      });
+        findViewById(R.id.exit_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         findViewById(R.id.open_gallery).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, GalleryActivity.class));
@@ -86,7 +80,7 @@ public class MainActivity extends AppCompatActivity{
         findViewById(R.id.history_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,HistoryActivity.class));
+                startActivity(new Intent(MainActivity.this, HistoryActivity.class));
             }
         });
 
@@ -197,8 +191,7 @@ public class MainActivity extends AppCompatActivity{
     }*/
 
     @NonNull public static File getScanFolder() {
-       return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
-
+        return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
     }
 
 }

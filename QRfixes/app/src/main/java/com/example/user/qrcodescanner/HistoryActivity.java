@@ -1,17 +1,15 @@
 package com.example.user.qrcodescanner;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +25,13 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-       ListView listView = (ListView) findViewById(R.id.listView) ;
+        ListView listView = (ListView) findViewById(R.id.listView);
         myImageAdapter = new HistoryActivity.ImageAdapter(this);
         listView.setAdapter(myImageAdapter);
 
 
-        String pathToScanFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + File.separator + "QR_results";
+        String pathToScanFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            + File.separator + "QR_results";
 
         File folder = new File(pathToScanFolder);
         if (!folder.exists()) {
@@ -44,10 +43,9 @@ public class HistoryActivity extends AppCompatActivity {
 
         File[] files = targetDirector.listFiles();
 
-        if (files==null){
-            Toast.makeText(this,"Сначала Прочитайте QR",Toast.LENGTH_SHORT).show();
-        }
-        else {
+        if (files == null) {
+            Toast.makeText(this, "Сначала Прочитайте QR", Toast.LENGTH_SHORT).show();
+        } else {
             for (File file : files) {
                 myImageAdapter.add(file.getAbsolutePath());
             }
@@ -101,23 +99,13 @@ public class HistoryActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = inflater.inflate(R.layout.item_history_result, parent, false);
 
-           TextView uipart_name = (TextView ) view.findViewById(R.id.part_name);
-            TextView uifull_name = (TextView ) view.findViewById(R.id.full_name);
-/*
+            TextView uipart_name = (TextView) view.findViewById(R.id.part_name);
+            TextView uifull_name = (TextView) view.findViewById(R.id.full_name);
 
-TODO yбрать из комментов и передать результат сканирования
-           uipart_name.setText();
-            uifull_name.setText();
-*/
+            //TODO yбрать из комментов и передать результат сканирования
+            uipart_name.setText(itemList.get(position));
 
-
-
-
-           /*
-           String pathToImage = itemList.get(position);
-            uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToImage));
-*/
-
+//            uifull_name.setText();
 
             return view;
         }

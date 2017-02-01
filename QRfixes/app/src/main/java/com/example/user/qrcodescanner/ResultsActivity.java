@@ -3,13 +3,9 @@ package com.example.user.qrcodescanner;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,10 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class ResultsActivity extends AppCompatActivity {
 
@@ -58,12 +60,11 @@ public class ResultsActivity extends AppCompatActivity {
             startCamera();
         }
 
-
         uiResult = (TextView) findViewById(R.id.result_txt);
         uiResultOfScanImage = (ImageView) findViewById(R.id.result_of_scan);
         uiResultOfScanImage.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-               if (pathToCapturedImage != null) {
+                if (pathToCapturedImage != null) {
                     startGlide();
                 } else {
                     Toast.makeText(ResultsActivity.this, "Файла не существует", Toast.LENGTH_SHORT).show();
@@ -72,52 +73,40 @@ public class ResultsActivity extends AppCompatActivity {
         });
     }
 
-
-
     private void startCamera() {
-callCamera();
 
-
-        /*  TODO ===Разрешения===
-
-        Разрешение на камеру в 6.0 выходит только при нажатии кнопки "Прочитать КУАР"
-      Т.е
-         1. Если при первом запуске юзер сначала нажмет "Камера", то все сломается
-         2. Мы не знаем какую кнопку сначала нажмет пользователь : "КУАР" или "Камера". Прописывать одинаковые пермишны для 2 кнопок не хочется
-         3. Раскомментить строчки 91-103 -думаю нет смысла
-         4. В MainActivity продолжение этой темы
-
-
-            if(Build.VERSION.SDK_INT>Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)==
-                    PackageManager.PERMISSION_GRANTED){
-                callCamera();
-            }else {
-                if(shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                    Toast.makeText(this, "Нет доступа к памяти",Toast.LENGTH_SHORT).show();
+        Dexter.withActivity(this)
+            .withPermissions(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ).withListener(new MultiplePermissionsListener() {
+            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.areAllPermissionsGranted()) {
+                    callCamera();
                 }
-                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE_RESULT);
             }
-        }
-        else{ //Если версия Андроид старше 6.0
-            callCamera();
-        }*/
+            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions,
+                                                                     PermissionToken token) {
+                // TODO разобраться как с помощью dexter показывать snackback с переход к permissions приложения
+                Toast.makeText(ResultsActivity.this, "Нет доступа к памяти", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResultsActivity.this, "Нет доступа к камере", Toast.LENGTH_SHORT).show();
+            }
+        }).check();
     }
-    private  void callCamera() {
+
+    private void callCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File scanFolder = MainActivity.getScanFolder();
         if (!scanFolder.exists()) {
             scanFolder.mkdirs();
         }
         String timeStamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-        nameOfPhoto= "img " +timeStamp;
-            File photo = new File(scanFolder, nameOfPhoto+".jpg");
-            pathToCapturedImage = photo.getAbsolutePath();
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
-            startActivityForResult(intent, TAKE_PICTURE_REQUEST);
-
-        }
-
+        nameOfPhoto = "img " + timeStamp;
+        File photo = new File(scanFolder, nameOfPhoto + ".jpg");
+        pathToCapturedImage = photo.getAbsolutePath();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
+        startActivityForResult(intent, TAKE_PICTURE_REQUEST);
+    }
 
 
     private void startGlide() {
@@ -129,12 +118,8 @@ callCamera();
             if (resultCode == Activity.RESULT_OK) {
                 // TODO вместо текста ниже писать имя файла
                 uiResult.setText(nameOfPhoto);
-
-                Bitmap imageFromFile = ImageUtils.getBitmapFromFile(pathToCapturedImage);
-                if (imageFromFile != null) {
-                    // TODO добиться того, чтобы при перевероте экрана сохранялось фото
-                    uiResultOfScanImage.setImageBitmap(imageFromFile);
-                }
+                Glide.with(ResultsActivity.this).load(new File(pathToCapturedImage))
+                    .into(uiResultOfScanImage);
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 uiResult.setText("Отмена съемки");
                 pathToCapturedImage = null;
