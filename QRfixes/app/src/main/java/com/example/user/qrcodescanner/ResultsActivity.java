@@ -27,7 +27,7 @@ public class ResultsActivity extends AppCompatActivity {
     private static final int TAKE_PICTURE_REQUEST = 1234;
 
     private static final int REQUEST_WRITE_STORAGE_RESULT = 1;
-    private static final int REQUEST_CAMERA_RESULT = 2;
+
     private String pathToCapturedImage;
     private String nameOfPhoto;
 
@@ -57,12 +57,7 @@ public class ResultsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             startCamera();
         }
-        findViewById(R.id.continScan_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ResultsActivity.this,ResultsActivityForQr.class));
-            }
-        });
+
 
         uiResult = (TextView) findViewById(R.id.result_txt);
         uiResultOfScanImage = (ImageView) findViewById(R.id.result_of_scan);
@@ -80,17 +75,28 @@ public class ResultsActivity extends AppCompatActivity {
 
 
     private void startCamera() {
-        callCamera();
-/*
-        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)==
+callCamera();
+
+
+        /*  TODO ===Разрешения===
+
+        Разрешение на камеру в 6.0 выходит только при нажатии кнопки "Прочитать КУАР"
+      Т.е
+         1. Если при первом запуске юзер сначала нажмет "Камера", то все сломается
+         2. Мы не знаем какую кнопку сначала нажмет пользователь : "КУАР" или "Камера". Прописывать одинаковые пермишны для 2 кнопок не хочется
+         3. Раскомментить строчки 91-103 -думаю нет смысла
+         4. В MainActivity продолжение этой темы
+
+
+            if(Build.VERSION.SDK_INT>Build.VERSION_CODES.M){
+            if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)==
                     PackageManager.PERMISSION_GRANTED){
                 callCamera();
             }else {
-                if(shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)){
-                    Toast.makeText(this, "Нет доступа к использованию камеры",Toast.LENGTH_SHORT).show();
+                if(shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                    Toast.makeText(this, "Нет доступа к памяти",Toast.LENGTH_SHORT).show();
                 }
-                requestPermissions(new String[]{android.Manifest.permission.CAMERA},REQUEST_CAMERA_RESULT);
+                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_WRITE_STORAGE_RESULT);
             }
         }
         else{ //Если версия Андроид старше 6.0

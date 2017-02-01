@@ -16,7 +16,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,7 +23,9 @@
         <activity android:name=".ResultsActivity" />
         <activity android:name=".ResultsActivityForQr" />
         <activity android:name=".FullPhotoActivity" />
+
         <activity android:name=".HistoryActivity"></activity>
+
     </application>
 
 </manifest>

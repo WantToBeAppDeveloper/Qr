@@ -24,6 +24,8 @@ import java.io.IOException;
 
 
 public class ResultsActivityForQr extends AppCompatActivity {
+    /*
+
     private ImageView imageView;
     private TextView uiResult;
     private String    resultOfScan;
@@ -156,5 +158,6 @@ public class ResultsActivityForQr extends AppCompatActivity {
     private void startGlide() {
         Glide.with(this).load(pathToScannedImage).fitCenter().crossFade().into(imageView);
     }
-
+*/
 }
+

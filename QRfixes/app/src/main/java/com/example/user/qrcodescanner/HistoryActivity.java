@@ -99,15 +99,25 @@ public class HistoryActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = inflater.inflate(R.layout.item_gallery_photo, parent, false);
+            View view = inflater.inflate(R.layout.item_history_result, parent, false);
 
-            ImageView uiImage = (ImageView) view.findViewById(R.id.image);
+           TextView uipart_name = (TextView ) view.findViewById(R.id.part_name);
+            TextView uifull_name = (TextView ) view.findViewById(R.id.full_name);
+/*
+
+TODO yбрать из комментов и передать результат сканирования
+           uipart_name.setText();
+            uifull_name.setText();
+*/
 
 
-            String pathToImage = itemList.get(position);
+
+
+           /*
+           String pathToImage = itemList.get(position);
             uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToImage));
+*/
 
-            // TODO если путь короче 20 символов
 
             return view;
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_height="match_parent">
 
@@ -8,22 +9,22 @@
     <TextView
         android:id="@+id/part_name"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
+        tools:text="Рандомный очень длинный результат сканирования, в котором ну очень много лолов кеков чебуреков. Здорово, прада?"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="4dp"
-        android:ellipsize="middle"
-        android:maxLength="14"
-
+        android:ellipsize="end"
+        android:maxLength="25"
+        android:textSize="35sp"
+        android:lines="1"
         />
     <TextView
         android:id="@+id/full_name"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
-        android:ellipsize="middle"
-        android:maxLength="14"
-        android:textSize="10sp"
+        android:layout_height="wrap_content"
+        tools:text="Рандомный очень длинный результат сканирования, в котором ну очень много лолов кеков чебуреков. Здорово правда?"
+
         />
+
 
 </LinearLayout>

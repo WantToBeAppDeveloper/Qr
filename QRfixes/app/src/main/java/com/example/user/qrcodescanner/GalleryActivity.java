@@ -107,21 +107,15 @@ public class GalleryActivity extends AppCompatActivity {
             TextView uiText = (TextView) view.findViewById(R.id.file_name);
 
 
-            // TODO выдергивать имя файла и показывать в формате
-            // и выводить в формате file_name_....jpg если имя файла длинное
-            // если имя файла не очень длинное то выводить его полностью
             String pathToImage = itemList.get(position);
+            File file = new File(pathToImage);
+            String fileName = file.getName();
             // TODO может случится крэш, если фотка большого размера
             // использовать для отображения библиотеку Glide
-
+uiText.setText(fileName);
 
             uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToImage));
-            if(pathToImage.length()<=14){
-                uiText.setText(pathToImage);
-            }
-            else {
-                uiText.setText(pathToImage.substring(pathToImage.length() - 14));
-            }
+
          // TODO если путь короче 20 символов
 
             return view;

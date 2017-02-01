@@ -16,14 +16,15 @@
 
     <TextView
         android:id="@+id/file_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:text="img Feb 1,2017"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="4dp"
-        android:ellipsize="middle"
+        android:ellipsize="end"
         android:maxLength="14"
         android:singleLine="true"
-        tools:text="img 1276576734"
+
         />
 
 </LinearLayout>
