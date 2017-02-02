@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -63,10 +65,10 @@ public class GalleryActivity extends AppCompatActivity {
                                 long id) {
             String prompt = (String) parent.getItemAtPosition(position);
             startActivity(FullPhotoActivity.createIntent(GalleryActivity.this,prompt));
-
-            // TODO при нажатии показывать фото на полный экран
         }
     };
+
+
 
     public static class ImageAdapter extends BaseAdapter {
 
@@ -108,17 +110,17 @@ public class GalleryActivity extends AppCompatActivity {
 
 
             String pathToImage = itemList.get(position);
+
+
             File file = new File(pathToImage);
             String fileName = file.getName();
-            // TODO может случится крэш, если фотка большого размера
-            // использовать для отображения библиотеку Glide
-uiText.setText(fileName);
 
+            uiText.setText(fileName);
             uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToImage));
-
-         // TODO если путь короче 20 символов
-
             return view;
+//Надо добавить Glide, чтобы решить проблему,но хз куда копипастить. Мозг не работает,т.к паника XD
         }
+
+
     }
 }

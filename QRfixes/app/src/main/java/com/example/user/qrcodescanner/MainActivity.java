@@ -23,16 +23,11 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*
- TODO   ===Разрешения===
-  Чтобы не париться с разрешениями по нажатию кнопок, хочу запросить все и сразу.
-  Хотел добавить MainActivity extends RunTimePermission, но это невозможно. Как быть?
-  Строки 58-61 и 95-97 относятся к RunTimePermission
- */
     private static final String TAG = "MainActivity";
 
     private static final int GALLERY_REQUEST    = 22131;
@@ -48,12 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "on create called");
         setContentView(R.layout.activity_main);
-/*
-     requestPermissions(new String[]{
-             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-             Manifest.permission.CAMERA},
-             R.string.msg,REQUEST_PERMISSION);
-        */
+
 
         findViewById(R.id.exit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,19 +71,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+
+
             }
         });
-
-
-
-   /* public void onPermissionGranted(int requestCode){
-        //when Permission granted
-        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-
-    }
-
-    */
-
     }
 
     private void startScanningQrCode(Activity activity) {
@@ -130,20 +111,25 @@ public class MainActivity extends AppCompatActivity {
         if (!file.exists()) {
             file.mkdirs();//if not, create it
         }
-        File imageFile = new File(file.getPath() + resultOfScan + ".jpg");
+        File imageFile = new File(file.getPath() + resultOfScan + ".txt");
         writeBitmapToFile(bitmap, imageFile);
     }
 
     @NonNull public static File getQrResultsFolder() {
-        return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
+        return new File(Environment.getExternalStorageDirectory(), "/QR_Results");
     }
 
     private void writeBitmapToFile(Bitmap bitmap, File imageFile) {
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(imageFile);
+
+            FileWriter writer = new FileWriter(imageFile);
+            writer.append(resultOfScan.toString());
+            writer.flush();
+            writer.close();
+           /* out = new FileOutputStream(imageFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, out); // bmp is your Bitmap instance
-            // PNG is a lossless format, the compression factor (100) is ignored
+            // PNG is a lossless format, the compression factor (100) is ignored*/
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -151,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 if (out != null) {
                     out.close();
                 }
-            } catch (IOException e) {
+           } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -186,9 +172,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-  /*  @NonNull public static File getQrResultsFolder(){
-        return  new File (Environment.getExternalStorageDirectory(),"QR_Results");
-    }*/
 
     @NonNull public static File getScanFolder() {
         return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
