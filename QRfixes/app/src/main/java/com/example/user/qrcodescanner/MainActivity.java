@@ -12,8 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -25,39 +23,25 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
-    private final        int GALLERY_REQUEST      = 22131;
-
-    private Button scan_btn;
-    private Button exit_btn;
-
-    private String    resultOfScan;
-    private ImageView uiResultOfScanIv;
+    private static final int GALLERY_REQUEST    = 22131;
+    private String resultOfScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "on create called");
-        setContentView(R.layout.activity_reading);
+        setContentView(R.layout.activity_main);
 
-        scan_btn = (Button) findViewById(R.id.scan_btn);
-        uiResultOfScanIv = (ImageView) findViewById(R.id.result_of_scan);
 
-        scan_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startScanningQrCode(MainActivity.this);
-//                startActivity(new Intent(MainActivity.this, ResultsActivity.class));
-            }
-        });
-
-        exit_btn = (Button) findViewById(R.id.exit_btn);
-        exit_btn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.exit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -71,6 +55,20 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.open_camera).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ResultsActivity.class));
+            }
+        });
+        findViewById(R.id.scan_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startScanningQrCode(MainActivity.this);
+            }
+        });
+        findViewById(R.id.history_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+
+
             }
         });
     }
@@ -98,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             saveToGallery(bitmap, text);
-            uiResultOfScanIv.setImageBitmap(bitmap);
 
         } catch (WriterException e) {
             e.printStackTrace();
@@ -106,24 +103,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveToGallery(Bitmap bitmap, String title) {
-        File file = getScanFolder();
+        File file = getQrResultsFolder();
         if (!file.exists()) {
             file.mkdirs();//if not, create it
         }
-        File imageFile = new File(file.getPath() + resultOfScan + ".jpg");
-        writeBitmapToFile(bitmap, imageFile);
+        FileWriter fWriter;
+      //  File sdCardFile = new File(Environment.getExternalStorageDirectory() +"/"+resultOfScan+ " .txt");
+        // скопировано из стаковерфлоу
+        String timeStamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+     File sdCardFile = new File(file.getPath() +"/"+resultOfScan+ timeStamp+" .txt");  // это мой вариант
+       // writeBitmapToFile(bitmap, sdCardFile);
+        try {
+         //   FileWriter writer = new FileWriter(sdCardFile);
+           // writer.append(resultOfScan.toString());  //эта строчка из старой версии врайтера
+            fWriter = new FileWriter(sdCardFile, true);
+            fWriter.flush();
+            fWriter.close();
+    } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
-    @NonNull public static File getScanFolder() {
-        return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
+    @NonNull public static File getQrResultsFolder() {
+        return new File(Environment.getExternalStorageDirectory(), "QR_Results");
     }
 
-    private void writeBitmapToFile(Bitmap bitmap, File imageFile) {
+    private void writeBitmapToFile(Bitmap bitmap, File sdCardFile) {
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(imageFile);
+            FileWriter fWriter;
+            FileWriter writer = new FileWriter(sdCardFile);
+            writer.append(resultOfScan.toString());
+            fWriter = new FileWriter(sdCardFile, true);
+            fWriter.write("hi");
+            fWriter.flush();
+            fWriter.close();
+           /* out = new FileOutputStream(imageFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, out); // bmp is your Bitmap instance
-            // PNG is a lossless format, the compression factor (100) is ignored
+            // PNG is a lossless format, the compression factor (100) is ignored*/
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -131,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 if (out != null) {
                     out.close();
                 }
-            } catch (IOException e) {
+           } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -165,4 +182,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    @NonNull public static File getScanFolder() {
+        return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
+    }
+
+
 }
