@@ -17,13 +17,14 @@
         android:maxLength="25"
         android:textSize="35sp"
         android:lines="1"
+        android:textColor="@color/colorPrimaryDark"
         />
     <TextView
         android:id="@+id/full_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Рандомный очень длинный результат сканирования, в котором ну очень много лолов кеков чебуреков. Здорово правда?"
-
+android:textColor="@color/colorPrimaryDark"
         />
 
 

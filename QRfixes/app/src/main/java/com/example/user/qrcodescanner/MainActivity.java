@@ -25,18 +25,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
     private static final int GALLERY_REQUEST    = 22131;
-    private static final int REQUEST_PERMISSION = 10;
-
-    private static final int REQUEST_EXTERNAL_STORAGE_RESULT = 1;
-
     private String resultOfScan;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,22 +107,37 @@ public class MainActivity extends AppCompatActivity {
         if (!file.exists()) {
             file.mkdirs();//if not, create it
         }
-        File imageFile = new File(file.getPath() + resultOfScan + ".txt");
-        writeBitmapToFile(bitmap, imageFile);
+        FileWriter fWriter;
+      //  File sdCardFile = new File(Environment.getExternalStorageDirectory() +"/"+resultOfScan+ " .txt");
+        // скопировано из стаковерфлоу
+        String timeStamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+     File sdCardFile = new File(file.getPath() +"/"+resultOfScan+ timeStamp+" .txt");  // это мой вариант
+       // writeBitmapToFile(bitmap, sdCardFile);
+        try {
+         //   FileWriter writer = new FileWriter(sdCardFile);
+           // writer.append(resultOfScan.toString());  //эта строчка из старой версии врайтера
+            fWriter = new FileWriter(sdCardFile, true);
+            fWriter.flush();
+            fWriter.close();
+    } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     @NonNull public static File getQrResultsFolder() {
-        return new File(Environment.getExternalStorageDirectory(), "/QR_Results");
+        return new File(Environment.getExternalStorageDirectory(), "QR_Results");
     }
 
-    private void writeBitmapToFile(Bitmap bitmap, File imageFile) {
+    private void writeBitmapToFile(Bitmap bitmap, File sdCardFile) {
         FileOutputStream out = null;
         try {
-
-            FileWriter writer = new FileWriter(imageFile);
+            FileWriter fWriter;
+            FileWriter writer = new FileWriter(sdCardFile);
             writer.append(resultOfScan.toString());
-            writer.flush();
-            writer.close();
+            fWriter = new FileWriter(sdCardFile, true);
+            fWriter.write("hi");
+            fWriter.flush();
+            fWriter.close();
            /* out = new FileOutputStream(imageFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, out); // bmp is your Bitmap instance
             // PNG is a lossless format, the compression factor (100) is ignored*/
@@ -176,5 +187,6 @@ public class MainActivity extends AppCompatActivity {
     @NonNull public static File getScanFolder() {
         return new File(Environment.getExternalStorageDirectory(), "Scan_Results");
     }
+
 
 }

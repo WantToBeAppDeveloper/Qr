@@ -107,20 +107,13 @@ public class GalleryActivity extends AppCompatActivity {
 
             ImageView uiImage = (ImageView) view.findViewById(R.id.image);
             TextView uiText = (TextView) view.findViewById(R.id.file_name);
-
-
             String pathToImage = itemList.get(position);
-
-
             File file = new File(pathToImage);
             String fileName = file.getName();
-
+            Glide.with(parent.getContext()).load(file).into(uiImage);
             uiText.setText(fileName);
-            uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToImage));
+           // uiImage.setImageBitmap(ImageUtils.getBitmapFromFile(pathToImage));
             return view;
-//Надо добавить Glide, чтобы решить проблему,но хз куда копипастить. Мозг не работает,т.к паника XD
         }
-
-
     }
 }

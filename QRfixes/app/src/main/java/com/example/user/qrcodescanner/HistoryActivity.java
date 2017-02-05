@@ -30,8 +30,8 @@ public class HistoryActivity extends AppCompatActivity {
         listView.setAdapter(myImageAdapter);
 
 
-        String pathToScanFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            + File.separator + "QR_results";
+        String pathToScanFolder = Environment.getExternalStorageDirectory()
+            + "/QR_results";
 
         File folder = new File(pathToScanFolder);
         if (!folder.exists()) {
@@ -47,7 +47,7 @@ public class HistoryActivity extends AppCompatActivity {
             Toast.makeText(this, "Сначала Прочитайте QR", Toast.LENGTH_SHORT).show();
         } else {
             for (File file : files) {
-                myImageAdapter.add(file.getAbsolutePath());
+                myImageAdapter.add(file.getName());
             }
         }
         listView.setOnItemClickListener(myOnItemClickListener);
@@ -104,8 +104,7 @@ public class HistoryActivity extends AppCompatActivity {
 
             //TODO yбрать из комментов и передать результат сканирования
             uipart_name.setText(itemList.get(position));
-
-//            uifull_name.setText();
+            uifull_name.setText(itemList.get(position));
 
             return view;
         }
